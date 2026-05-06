@@ -1,5 +1,6 @@
-Serbuntu
+# Serbuntu
 A lightweight cloud-style document interface built with HTML, CSS, and JavaScript.
+
 Serbuntu is a browser-based document management UI inspired by modern cloud storage systems. The project focuses on interactive frontend behavior, clean UI design, local storage functionality, and dynamic document management.
 
 Features
