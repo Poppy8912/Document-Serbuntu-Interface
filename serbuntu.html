@@ -1,0 +1,692 @@
+
+<html lang="en">
+<head>
+
+   <!-- Load Fira Code font from Google fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+  
+<!-- Meta Data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Browser title -->
+    <title>Cloud</title>
+    <style>
+        /* Main styling */
+       #mainContent {position: relative;}
+        body{
+            margin: 0;
+            font-family: "Fira Code", monospace;
+            font-weight:400;
+            /* Flex layout for page structure*/
+            display: flex;
+            height: 100vh;
+            flex-direction:column;
+            color:#C7C1E8;
+            background: #212E4b;
+            text-align: center;
+            user-select:none;
+        }
+
+        /* Sidebar navigation */
+        nav {
+            position: relative;
+            z-index: 10;
+            width:140px;
+            background:#e9e9e9;
+            padding:10px;
+            background: #19253B;
+            border-right: 1px solid #191F38;       
+        }
+        header{
+            position: relative;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content:space-between;
+            padding:10px;
+            color:#C7C1E8;
+            background: #3b4d70;
+            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.5);
+        }
+        header .left { 
+            display: flex; 
+            align-items:center;
+            gap:10px;
+        }
+        header .center {
+            flex:1; 
+            text-align:center;
+        }
+
+        /* Search bar */
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: #19253B;      
+            border-radius: 999px; 
+            padding: 0 10px;         
+            width: 60%;             
+            margin: 0 auto;         
+            }
+
+        .search-wrapper input {
+            flex: 1;                 
+            background: transparent;  
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 16px;
+            padding: 10px 0;        
+            }
+
+        .search-wrapper input::placeholder {
+            color: #aaa;
+            }
+
+
+        header .right {
+            display: flex; 
+            align-items:center;
+            gap:10px;}
+            
+        /* Main content */
+        main{
+            flex:1;
+            display:flex;
+        }
+        /* Navigation links */
+        nav a {
+            display:block;
+            padding: 10px;
+            border-radius: 14px;
+            text-decoration: none;
+            color:white;
+            user-select:none;
+            cursor:pointer;
+            background-color:transparent;
+            transition: background-color 0.2s ease, transform 0.3s ease;
+        }
+        nav a:hover{
+            background-color:#4d2c34;
+            border-radius: 20px;
+            
+        }
+        nav a:visited{
+            color:white
+        }
+        section{
+            flex:1;
+            padding:20px;
+        }
+
+        /* Custom popup menu */
+        .pop{
+            position:absolute;
+            display:none;
+            min-width:160px;
+            background:#222;
+            color:#fff;
+            border:1px solid #333;
+            border-radius:8px;
+            padding:6px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.35);
+            z-index:10;
+        }
+        .pop button{
+            width:100%;
+            background:transparent;
+            border:0;
+            color:#fff;
+            text-align:left;
+            padding: 8px 10px;
+            border-radius:6px;
+            cursor:pointer;
+        }
+        .pop button:hover{
+            background:#2e2e2e;
+        }
+
+        /* Document card styling */
+        .doc{
+            border:1px solid #191F38;
+            border-radius:10px;
+            margin:10px 0;
+            background: #19253B;
+            overflow:hidden;
+        }
+        .doc-header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:10px 12px;
+            cursor:pointer;
+            user-select:none;
+        }
+        .doc-title{
+            font-weight:600;
+        }
+        .doc-toggle{
+            border:0;
+            background:transparent;
+            color:#C7C1E8;
+            cursor:pointer;
+            font-size:14px;
+        }
+        .doc-body{
+            padding: 10px 12px;
+        }
+        .doc.collapsed .doc-body  {display:none;}
+
+        /* Icon container */
+        .icon-wrapper{
+            display:flex;
+            align-items:center;
+            gap:5px;
+        }
+        .delete-icon{
+            background:transparent;
+            border:none;
+            color:#C7C1E8;
+            font-size:14px;
+            cursor:pointer;
+            opacity:0.7;
+        }
+        .delete-icon:hover{
+            opacity:1;
+        }
+        /* Trash section */
+        .trash-header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:10px 12px;
+            user-select:none;
+        }
+        /* Profile popup */
+        #profile-box{
+            position:absolute;
+            top:40px;
+            right:10px;
+            background:#2c3e50;
+            color:white;
+            padding:10px 15px;
+            border-radius:8px;
+            box-shadow:0 4px 8px rgba(0,0,0,0.3);
+            z-index:1000;
+        }
+        #profile-box p{
+            font-size:14px;
+            margin:0;
+        }
+        /* Profile button */
+        #profileBtn{
+            width: 32px;
+            aspect-ratio: 1 / 1; 
+            padding: 0;         
+            flex: 0 0 auto;        
+            display: inline-grid;
+            place-items: center;
+            line-height: 1;       
+            font-size: 20px;       
+            }
+        [hidden]{display:none !important;}
+
+        #profileBox.show{
+            opacity:1;
+            display:block;
+        }
+        .hidden{
+            display:none;
+        }
+
+        /* Save button */
+        .save-icon{
+            background:transparent;
+            border:none;
+            color:#C7C1E8;
+            font-size:14px;
+            cursor:pointer;
+            opacity:0.7;
+            transition: opacity 0.2s ease;
+        }
+        .save-icon:hover{
+            opacity:1;
+        }
+
+        /* Connection status badge */
+        .badge{
+            display:inline-block;
+            padding:6px 10px;
+            border-radius:999px;
+            background:#2b3b5c;
+            color:#C7C1E8;
+            font-size:12px;
+            border:1px solid #191F38;
+            margin-right:8px;
+            white-space:nowrap;
+        }
+        .badge.ok{background:#254b36;}
+        .badge.warn{background:#5b2b2b;}
+        /* Connect button */
+        #connectBtn{
+            background:#19253B;
+            color:#C7C1E8;
+            border:1px solid #191F38;
+            padding:6px 10px;
+            border-radius:10px;
+            cursor:pointer;
+        }
+        #connectBtn:hover{filter:brightness(1.1);}
+    </style>
+
+</head>
+<body>
+   <!-- Header Section --> 
+    <header>
+        <!-- Left side branding -->
+        <div class="left">
+            <strong>☁ Serbuntu</strong>
+        </div>
+        <!-- Search bar -->
+        <div class="center">
+            <div class="search-wrapper">
+                <input type="text" placeholder="Search files...">
+            </div>
+        </div>
+        <!-- Right side controls -->
+        <div class="right">
+            <!-- Server connection status -->
+            <span id="serverBadge" class="badge" title="No server set">Not connected</span>
+            <!-- Server connect button -->
+            <button id="connectBtn" title="Set server address">Connect</button>
+            <!-- Profile button -->
+            <button id="profileBtn">👤</button>
+            <!-- Profile popup -->
+            <div id="profile-box" hidden>
+                <p id="profileName">Loggin in as Guest</p>
+            </div>
+        </div>
+    </header>
+<main>
+    <!-- Main page structure -->
+    <nav>
+        <!-- Sidebar navigation -->
+        <a id="myFilesBtn">My Files</a>
+        <a id="trashBtn">Trash</a>
+    </nav>
+    <!-- Main content section -->
+    <section id="mainContent">
+        <h2>Welcome To Cloud</h2>
+        <div id="contentText">
+            <div id="docs"></div>
+        </div>
+        <!-- Right click / double click popup -->
+        <div id="popMenu" class="pop">
+            <button id="newDocBtn">📝 New Document</button>
+        </div>
+    </section>
+</main>
+
+<script>
+    /* DOM element references */
+    const mainContent = document.getElementById('mainContent');
+    const contentText = document.getElementById('contentText');
+    const myFilesBtn = document.getElementById('myFilesBtn');
+    const trashBtn = document.getElementById('trashBtn');
+    const popMenu=document.getElementById('popMenu');
+    const newDocBtn=document.getElementById('newDocBtn');
+    const docsContainer=document.getElementById('docs');
+    const profileBtn=document.getElementById("profileBtn");
+    const profileBox=document.getElementById("profile-box");
+    const profileName=document.getElementById("profileName");
+    /* User and storage setup */
+    const username=localStorage.getItem("username") || "Guest";
+    /* Key used for server URL storage */
+    const serverKey="serverBase";
+    /* Display loggin-in user */
+    profileName.textContent=`Loggin in as: ${username}`;
+    /* Stores deleted documents temporarily */
+    let trashDocs=[];
+    /* My files button - displays active documents */
+    myFilesBtn.addEventListener('click',(e)=> {
+        e.preventDefault();
+        let docsE1=document.getElementById('docs');
+        /* Recreate docs container if its missing */
+        if(!docsE1){
+            docsE1=document.createElement('div');
+            docsE1.id='docs';
+        }
+        /* Clear current content */
+        contentText.innerHTML='';
+        /* Re-add document container */
+        contentText.appendChild(docsE1);
+        docsE1.style.display='';
+    });
+    /* Trash Button - displays deleted documents */
+    trashBtn.addEventListener('click',(e)=> {
+        e.preventDefault();
+        renderTrash();
+    });
+    /* Render trash view - displays all deleted documents */
+    function renderTrash(){
+        const docsE1=document.getElementById('docs');
+        /* Hide normal docs while trash is open */
+        if (docsE1 && docsE1.parentElement ===contentText){
+            document.body.appendChild(docsE1);
+            docsE1.style.display='none';
+        }
+        /* Empty trash message */
+        if (trashDocs.length===0){
+            contentText.innerHTML='<p>Trash is Empty</p>';
+            return;
+        }
+        let html='<h3>Trash</h3>';
+        /* Create trash document cards */
+        trashDocs.forEach((d,index)=>{
+            html+=`
+                <div class="doc">
+                    <div class="trash-header">
+                        <div class="doc-title">${d.name}</div>
+                        <div class="icon-wrapper">
+                            <button class="doc-toggle"
+                                aria-expanded="true"
+                                onclick="toggleDoc(this.closest('.doc'))">▲</button>
+                            <button class="delete-icon" onclick="restoreFromTrash(${index})">♻️</button>
+                        </div>
+                        </div>
+                        <div class="doc-body">
+                            <textarea readonly style="
+                            width:100%;
+                            height:240px;
+                            background:#1e1e1e;
+                            color:white;
+                            border:none;
+                            padding:10px;
+                            font-family:monospace;
+                            resize:none;
+                            box-sizing:border-box;
+                            ">${d.content}</textarea>
+                        </div>
+                    </div>
+                    `;
+                            });
+                            contentText.innerHTML=html;                  
+    }
+    /* Double click menu - Opens popup menu */
+    mainContent.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        const rect = mainContent.getBoundingClientRect();
+        const x=e.clientX-rect.left;
+        const y=e.clientY-rect.top;
+        setTimeout(() => {
+        popMenu.style.left=x+'px';
+        popMenu.style.top=y+'px';
+        popMenu.style.display='block';
+        },0);
+});
+    /* Right click menu - Opens custom context menu*/
+    mainContent.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        const rect = mainContent.getBoundingClientRect();
+        const x=e.clientX-rect.left;
+        const y=e.clientY-rect.top;
+        popMenu.style.left=x+'px';
+        popMenu.style.top=y+'px';
+        popMenu.style.display='block';
+});
+    /* Close popup menu when clicking outside */
+    document.addEventListener('click', (e) => {
+        if (popMenu.style.display==='block' && !popMenu.contains(e.target))
+            popMenu.style.display='none';
+    });
+
+    /* Create new document flow */
+    newDocBtn.addEventListener('click', () => {
+        popMenu.style.display='none';
+        setTimeout(() => {
+            /* Ask user for document name */
+            const rawName=prompt('Enter the name of your new document');
+            const docName=rawName && rawName.trim();        
+            /* Validation check */
+            if (!docName){
+                alert(`Document creation cancelled.`);
+                return;
+        }
+            alert(`Document "${docName}" created!`);
+            let docsE1=document.getElementById('docs');
+            /* Create docs container if missing */
+            if (!docsE1){
+                docsE1=document.createElement('div');
+                docsE1.id='docs';
+                docsE1.style.display='none';
+                document.body.appendChild(docsE1);
+            }
+            /* Show documents section */
+            contentText.innerHTML='';
+            docsE1.style.display='';
+            contentText.appendChild(docsE1);
+            createDoc(docName);
+        }, 0);
+    });
+    
+    /* Profile button toggle */
+    profileBtn.addEventListener('click', () =>{
+        profileBox.classList.toggle("show");
+    });
+    /* Document header click - Toggles collapse state */
+    document.addEventListener('click',(e)=>{
+        const header=e.target.closest('.doc-header');
+        if (header) {
+            toggleDoc(header.parentElement);
+        }
+    });
+
+    /* Create document function */
+    /**
+     * Creates a new document card
+     * @param {string} namne
+     * @param {string} initialText
+     */
+
+    function createDoc(name,initialText=''){
+        let docsContainer=document.getElementById('docs');
+        /* Create container if missing */
+        if (!docsContainer){
+            docsContainer=document.createElement('div');
+            docsContainer.id='docs';
+            docsContainer.style.display='none';
+            document.body.appendChild(docsContainer);
+        }
+        /* Main document wrapper */
+        const doc=document.createElement('div');
+        doc.className='doc';
+        /* Document header */
+        const header=document.createElement('div');
+        header.className='doc-header';
+        const title=document.createElement('div');
+        title.className='doc-title';
+        title.textContent=name;
+        const iconWrapper=document.createElement('div');
+        iconWrapper.className='icon-wrapper';
+        /* Collapse button */
+        const toggleBtn=document.createElement('button');
+        toggleBtn.className='doc-toggle';
+        toggleBtn.setAttribute('aria-expanded','true');
+        toggleBtn.textContent='▲';
+        toggleBtn.onclick=(e)=>{
+            e.stopPropagation();
+            toggleDoc(doc);
+        }
+        /* Save button */
+        const saveBtn=document.createElement('button');
+        saveBtn.className='save-icon';
+        saveBtn.textContent='💾'; 
+        saveBtn.title='Save Document';
+        saveBtn.onclick=(e)=>{
+            e.stopPropagation();
+            const textArea=doc.querySelector('textarea');
+            const text=textArea ? textArea.value : '';
+            localStorage.setItem(name,text);
+            alert(`"${name}" saved!`);
+        }
+        /* Document body */
+        const body=document.createElement('div');
+        body.className='doc-body';
+        /* Delete button */
+        const deleteBtn=document.createElement('button');
+        deleteBtn.className='delete-icon';
+        deleteBtn.textContent='🗑️';
+        deleteBtn.onclick=(e)=>{
+            e.stopPropagation();
+            if(confirm(`Delete "${name}"?`)){
+                const textArea=doc.querySelector('textarea');
+                const text=textArea ? textArea.value : '';
+                /* Move deleted document into trash array*/
+                trashDocs.push({ name,content:text });
+                /* Remove document from UI */
+                doc.remove();
+            }
+        };
+        /* Build Header */
+        header.appendChild(title);
+        iconWrapper.appendChild(toggleBtn);
+        iconWrapper.appendChild(saveBtn);
+        iconWrapper.appendChild(deleteBtn);
+        header.appendChild(iconWrapper);
+        /* Textarea content */
+        body.innerHTML=`
+            <textarea style="
+            width:100%;
+            height:240px;
+            background:#1e1e1e;
+            color:white;
+            border:none;
+            padding:10px;
+            font-family:monospace;
+            resize:vertical;
+            box-sizing:border-box;
+            " placeholder="Start typing your document here...">${initialText}</textarea>
+        `;
+        /* Final document assembly */
+        doc.appendChild(header);
+        doc.appendChild(body);
+        docsContainer.appendChild(doc);
+
+    }
+    /* Toggle document collapse */
+    function toggleDoc(docE1){
+        /* Toggle collapsed class */
+        const isCollapsed=docE1.classList.toggle('collapsed');
+        const btn=docE1.querySelector('.doc-toggle');
+        /* Change arrow direction */
+        btn.textContent=isCollapsed ? '▼' : '▲';  
+        /* Accessibility support */
+        btn.setAttribute('aria-expanded',String(!isCollapsed));
+    }
+    /* Restore document from trash */
+    function restoreFromTrash(index){
+        /* Remove item from trash array */
+        const doc=trashDocs.splice(index,1)[0];
+        let docsEl = document.getElementById('docs');
+        /* Create docs container if missing */
+        if (!docsEl) {
+            docsEl = document.createElement('div');
+            docsEl.id = 'docs';
+            docsEl.style.display = 'none';
+            document.body.appendChild(docsEl);
+        }
+        /* Recreate document */
+        createDoc(doc.name,doc.content);
+        /* Re-render trash view */ 
+        renderTrash();
+    }
+    /* Server storage helpers */
+    function getServerBase(){
+        return localStorage.getItem(serverKey) || "";
+    }
+    function setServerBase(v){
+        if(v) localStorage.setItem(serverKey,v);
+        else localStorage.removeItem(serverKey);
+    }
+    /* Server status badge */
+    function updateServerBadge(state="none",text="Not connected"){
+        const badge=document.getElementById("serverBadge");
+        if(!badge) return;
+        badge.classList.remove("ok","warn");
+        if(state==="ok") badge.classList.add("ok");
+        if(state==="warn") badge.classList.add("warn");
+        badge.textContent=`🔌 ${text}`;
+        badge.title=text;
+    }
+    /* Fake server connection - Simulates async connection */
+    async function fakeConnect(base){
+        await new Promise(r=>setTimeout(r,500));
+        try {new URL(base);} catch{
+            throw new Error("Invalid URL");
+        }
+        return true;
+    }
+    /* Server connection flow */
+    async function connectFlow(){
+        const current=getServerBase();
+        const example=current ||"http://localhost:3000";
+        const input=prompt("Enter your server URL (placeholder ok):", example);
+        if(input===null) return;
+        const trimmed=input.trim();
+        /* Empty input clears connection */
+        if(!trimmed){
+            setServerBase("");
+            updateServerBadge("warn","Not connected");
+            alert("Server cleared.");
+            return;
+        }
+        updateServerBadge("warn","Connecting...");
+        try{
+            /* Attempt fake connection */
+            await fakeConnect(trimmed);
+            setServerBase(trimmed);
+            updateServerBadge("ok", new URL(trimmed).host ? `Connected: ${new URL(trimmed).host}` : `Connected`);
+            alert(`Connected to: ${trimmed}`);
+        }catch(err){
+            console.error(err);
+            updateServerBadge("warn","Connection failed");
+            alert("Could not connect (placeholder). Try again or set later.");
+        }
+    }
+    /* Initial page load */
+    window.addEventListener("DOMContentLoaded", () =>{
+        const btn=document.getElementById("connectBtn");
+        /* Attach connect button listener */
+        if(btn) btn.addEventListener("click",connectFlow);
+        const base=getServerBase();
+        /* Restore saved server state */
+        if(base){
+            try{
+                const host=new URL(base).host;
+                updateServerBadge("ok",host ? `Connected: ${host}` : `Connected`);
+            }catch{
+                updateServerBadge("warn","Not connected");
+            }
+        }else{
+            updateServerBadge("warn","Not connected");
+        }
+    });
+    /* Window onload - Handles profile initialization */
+    window.onload = function () {
+    const profileBtn  = document.getElementById("profileBtn");
+    const profileBox  = document.getElementById("profile-box");
+    const profileName = document.getElementById("profileName");
+    /* Load username from localStorage */
+    const username = localStorage.getItem("username") || "Guest";
+    profileName.textContent = "Logged in as: " + (localStorage.getItem("username") || "Guest");
+    /* Toggle profile popup visibility */
+    profileBtn.addEventListener("click", () => {
+        profileBox.hidden = !profileBox.hidden;
+    });
+  };
+
+</script>
+</body>
+</html>
