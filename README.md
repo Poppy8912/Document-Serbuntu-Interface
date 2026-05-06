@@ -3,12 +3,13 @@ A lightweight cloud-style document interface built with HTML, CSS, and JavaScrip
 Serbuntu is a browser-based document management UI inspired by modern cloud storage systems. The project focuses on interactive frontend behavior, clean UI design, local storage functionality, and dynamic document management.
 
 Features
-    Document Management
-    - Create new documents dynamically
-    - Expand/collapse document sections
-    - Delete documents into a trash system
-    - Restore deleted documents from trash
-    - Save document contents using localStorage
+
+Document Management
+- Create new documents dynamically
+- Expand/collapse document sections
+- Delete documents into a trash system
+- Restore deleted documents from trash
+- Save document contents using localStorage
 
 Interactive UI
 - Custom right-click context menu
